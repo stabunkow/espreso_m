@@ -1,27 +1,53 @@
 espreso modified.
 
-## Pull
+## Dependencies
+
+Download Math Lib: 
+
+- [Intel MKL](https://software.intel.com/en-us/intel-mkl)
+
+Download Graph partitioners:
+
+- [ParMetis](http://glaros.dtc.umn.edu/gkhome/metis/parmetis/overview)
+- [Metis](http://glaros.dtc.umn.edu/gkhome/metis/metis/overview)
+
+Download ROCM（For device usage)：
+
+- [ROCM](https://github.com/RadeonOpenCompute/ROCm)
+- [rocBlas](https://github.com/ROCmSoftwarePlatform/rocBLAS)
+
+Or you can pull image：
 
 ```shell
 $ docker pull stabunkow/espreso_m:v1 # for cpu compile
 $ docker pull stabunkow/espreso_m:v2 # for device compile version
 ```
 
-## Run
+## Case file
 
-rlzj small case: /home/root/rlzj_small
+Fuel rod small case are provided, normal case are located at espreso_m:v2 image.
+
+### Run case
+
+small case: rlzj_small
+
+Set up at 1 node, 4 mpi processes, each mpi process set 1 core.  Node memory larger than 8GB.
+
 ```shell
-$ ./run_0.sh
-$ ./run_coarse.sh
-$ ./run_fine.sh
+$ ./run_0.sh        # for default strategy run
+$ ./run_coarse.sh   # for coarse load-balance run
+$ ./run_fine.sh     # for fine load-balance run
 ```
 
-rlzj case: /home/root/rlzj
+normal case: rlzj
+
+Set up at 8 nodes, 8 mpi processes, each mpi process set 32 cores.  Each node memory larger than 50GB.
+
 ```shell
-$ ./run_0.sh
-$ ./run_coarse.sh
-$ ./run_fine.sh
-$ ./run_device.sh
+$ ./run_0.sh      # for default strategy run
+$ ./run_coarse.sh # for coarse load-balance run
+$ ./run_fine.sh   # for fine load-balance run
+$ ./run_device.sh # for device run
 ```
 
 ## Reference
