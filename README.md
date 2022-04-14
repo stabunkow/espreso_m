@@ -6,10 +6,14 @@ Download Math Lib:
 
 - [Intel MKL](https://software.intel.com/en-us/intel-mkl)
 
+MKL install config: slient.cfg
+
 Download Graph partitioners:
 
 - [ParMetis](http://glaros.dtc.umn.edu/gkhome/metis/parmetis/overview)
 - [Metis](http://glaros.dtc.umn.edu/gkhome/metis/metis/overview)
+
+Metis config: metis.h (For 64 bits)
 
 Download ROCM（For device usage)：
 
