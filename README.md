@@ -20,6 +20,10 @@ Download ROCM（For device usage)：
 - [ROCM](https://github.com/RadeonOpenCompute/ROCm)
 - [rocBlas](https://github.com/ROCmSoftwarePlatform/rocBLAS)
 
+## Install
+
+Can refer to Dockerfile or Dockerfile_device.
+
 Or you can pull image：
 
 ```shell
