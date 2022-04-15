@@ -544,7 +544,8 @@ int IterSolverBase::Solve ( SuperCluster & cluster,
 				{
 					hipSetDevice(deviceId);
 					rocblas_create_handle(&deviceHandles[deviceId]);
-					rocblas_initialize();
+					// rocblas_initialize();
+					rocblas_init();
 				}
 			}
 			else
@@ -561,7 +562,8 @@ int IterSolverBase::Solve ( SuperCluster & cluster,
 						rocblas_create_handle(&deviceStreamHandles[deviceId][s]);
 						rocblas_set_stream(deviceStreamHandles[deviceId][s], deviceStreams[deviceId][s]);
 					}
-					rocblas_initialize();
+					// rocblas_initialize();
+					rocblas_init();
 				}
 			}
 			if (info::mpi::rank == 0) printf("handle created.\n");
