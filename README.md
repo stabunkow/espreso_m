@@ -2,6 +2,8 @@ espreso modified.
 
 ## Usage
 
+Compiler: OpenMPI or MPICH
+
 ### Download
 
 Download Math Lib: 
@@ -37,7 +39,7 @@ Install Metis:
 ```shell
 $ tar zxvf metis-5.1.0.tar.gz
 $ cp metis.h metis-5.1.0/include/
-$ make config prefix=~/install-path
+$ make config prefix=~/install-path/metis
 $ make 
 $ make install
 ```
@@ -47,7 +49,7 @@ Install ParMetis:
 ```shell
 $ tar zxvf parmetis-4.0.3.tar.gz
 $ cp metis.h parmetis-4.0.3/metis/include/
-$ make config prefix=~/install-path
+$ make config prefix=~/install-path/parmetis
 $ make 
 $ make install
 ```
@@ -62,17 +64,25 @@ If use device, ROCm and rocBlas install:
 ### Build
 
 ```bash
-$ ./waf configure --intwidth=64 --metis=metis-install-path --parmetis=parmetis-install-path
-$ ./waf $(nproc)
+$ export CPATH="/home/root/install/metis/include:/home/root/install/parmetis/include:$CPATH"
+$ export LD_LIBRARY_PATH="/home/root/install/metis/lib:/home/root/install/parmetis/lib:$LD_LIBRARY_PATH"
+$ export CPATH="/opt/rocm/include:/opt/rocm/rocblas/include:$CPATH"
+$ export LD_LIBRARY_PATH="/opt/rocm/lib:opt/rocm/rocblas/lib:$LD_LIBRARY_PATH"
+$ cd espreso_m
+$ chmod 755 waf
+$ ./waf configure --intwidth=64 --metis=~/install-path/metis --parmetis=~/install-path/parmetis
+$ ./waf -j$(nproc)
+$ export PATH="/home/root/espreso_m/build:$PATH"
+$ export LD_LIBRARY_PATH="/home/root/espreso_m/build:$LD_LIBRARY_PATH"
 ```
 
 If use device, with ROCm and rocBlas to build:
 
 ```bash
 $ ./waf configure --intwidth=64 --metis=/home/root/install/metis --parmetis=/home/root/install/parmetis --cxxflags='-DUSE_DEVICE -D__HIP_PLATFORM_HCC__' --linkflags="-L/opt/rocm/lib -L/opt/rocm/rocblas/lib -lrocblas "   
-$ ./waf $(nproc)  # last step link error
+$ ./waf $(nproc)  # last step link allow error
 $ cd build
-$ /usr/bin/mpic++ -fopenmp -L/opt/rocm/lib  src/app/espreso.cpp.37.o -L/opt/rocm/rocblas/lib -o/home/root/espreso_m/build/espreso -Wl,-Bstatic,--start-group -Wl,--end-group -Wl,-Bdynamic -Wl,--no-as-needed -L. -L/home/root/install/metis/lib -L/home/root/install/parmetis/lib -lnbesinfo -lnbconfig -lnbbasis -lnbwmpi -lnbmesh -lnbinput -lnboutput -lnbwpthread -lnbwcatalyst -lnbwhdf5 -lnbwgmsh -lnbwnglib -lnbwmetis -lnbwparmetis -lnbwscotch -lnbwptscotch -lnbwkahip -lnbphysics -lnbdevel -lnbmath -lnbautoopt -lnbwmkl -lnbwcuda -lnbwhypre -lnbwmklpdss -lnbwpardiso -lnbwsuperlu -lnbwwsmp -lnbwcsparse -lnbwbem -lnbwnvtx -lnbfeti -lparmetis -lmetis -lmkl_intel_ilp64 -lmkl_core -lmkl_gnu_thread -lmkl_blacs_intelmpi_ilp64 -lrocblas
+$ /usr/bin/mpic++ -fopenmp src/app/espreso.cpp.37.o -o/home/root/espreso_m/build/espreso -Wl,-Bstatic,--start-group -Wl,--end-group -Wl,-Bdynamic -Wl,--no-as-needed -L. -L/opt/rocm/lib -L/opt/rocm/rocblas/lib -L/home/root/install/metis/lib -L/home/root/install/parmetis/lib -lnbesinfo -lnbconfig -lnbbasis -lnbwmpi -lnbmesh -lnbinput -lnboutput -lnbwpthread -lnbwcatalyst -lnbwhdf5 -lnbwgmsh -lnbwnglib -lnbwmetis -lnbwparmetis -lnbwscotch -lnbwptscotch -lnbwkahip -lnbphysics -lnbdevel -lnbmath -lnbautoopt -lnbwmkl -lnbwcuda -lnbwhypre -lnbwmklpdss -lnbwpardiso -lnbwsuperlu -lnbwwsmp -lnbwcsparse -lnbwbem -lnbwnvtx -lnbfeti -lparmetis -lmetis -lmkl_intel_ilp64 -lmkl_core -lmkl_gnu_thread -lmkl_blacs_intelmpi_ilp64 -lrocblas
 ```
 
 ## Case file
@@ -174,7 +184,7 @@ $ docker pull stabunkow/espreso_m:v2 # for device compile version
 
 Fuel rod small case are provided.
 
-Set up at 1 node, 4 mpi processes, each mpi process set 1 core.  Node memory larger than 8GB.
+Set up at 1 node(machine), 4 mpi processes, each mpi process set 1 core.  Node memory larger than 8GB.
 
 small case: rlzj_small
 
