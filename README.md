@@ -1,6 +1,6 @@
 espreso modified.
 
-## Usage
+## Install
 
 Compiler: OpenMPI or MPICH
 
@@ -85,7 +85,7 @@ $ cd build
 $ /usr/bin/mpic++ -fopenmp src/app/espreso.cpp.37.o -o/home/root/espreso_m/build/espreso -Wl,-Bstatic,--start-group -Wl,--end-group -Wl,-Bdynamic -Wl,--no-as-needed -L. -L/opt/rocm/lib -L/opt/rocm/rocblas/lib -L/home/root/install/metis/lib -L/home/root/install/parmetis/lib -lnbesinfo -lnbconfig -lnbbasis -lnbwmpi -lnbmesh -lnbinput -lnboutput -lnbwpthread -lnbwcatalyst -lnbwhdf5 -lnbwgmsh -lnbwnglib -lnbwmetis -lnbwparmetis -lnbwscotch -lnbwptscotch -lnbwkahip -lnbphysics -lnbdevel -lnbmath -lnbautoopt -lnbwmkl -lnbwcuda -lnbwhypre -lnbwmklpdss -lnbwpardiso -lnbwsuperlu -lnbwwsmp -lnbwcsparse -lnbwbem -lnbwnvtx -lnbfeti -lparmetis -lmetis -lmkl_intel_ilp64 -lmkl_core -lmkl_gnu_thread -lmkl_blacs_intelmpi_ilp64 -lrocblas
 ```
 
-## Case file
+## Case Run
 
 Fuel rod small case are provided.
 
@@ -159,6 +159,20 @@ INPUT {
   }
 }
 ...
+```
+
+## Singularity Container
+
+[Download image](https://drive.google.com/file/d/1PBIrelo4IsIkdh2rSwQYJIFeI9cBVNkg/view?usp=sharing)
+
+Has compiled the relevant libraries and ROCM to singularity container.
+
+With param --rocm configure ROCM.
+
+Goto relative path to run case, make sure the case paths are bound.
+
+```shell
+$ mpirun --bind-to none -n ${process_sum} singularity exec --env OPAL_PREFIX=,OMPI_MCA_pml= --rocm /path/sc.sif /opt/rely/espreso_m/espreso_m/build/espreso -c espreso.ecf 0 0 0
 ```
 
 ## Docker Container
